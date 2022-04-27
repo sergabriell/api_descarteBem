@@ -1,0 +1,8 @@
+{
+  "name": "api_descarteBem",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:cricardolima/api_descarteBem.git",
+  "author": "Ricardo Lima <ricardo.engp@gmail.com>",
+  "license": "MIT"
+}
