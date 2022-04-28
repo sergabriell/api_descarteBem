@@ -6,7 +6,9 @@ const route = express();
 
 // Rotas de categorias
 //-get
-
+route.get('/', (req, res) => {
+    res.send('Hello World');
+});
 // Rotas de pontos de coleta
 //-get
 
