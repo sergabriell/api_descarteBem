@@ -32,10 +32,10 @@ CREATE TABLE IF NOT EXISTS voucher (
 );
 
 CREATE TABLE IF NOT EXISTS exchange (
-  id SERIAL PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
-  user_id TEXT NOT NULL REFERENCES users(id),
-  category_id TEXT NOT NULL REFERENCES categories(id),
-  collect_point_id TEXT NOT NULL REFERENCES collect_point(id)
+  id UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
+  user_id UUID NOT NULL REFERENCES users(id),
+  category_id UUID NOT NULL REFERENCES categories(id),
+  collect_point_id UUID NOT NULL REFERENCES collect_point(id)
 );
 
 INSERT INTO categories (name, score) 

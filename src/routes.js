@@ -1,19 +1,23 @@
 const express = require('express');
+const { listingAllTheCategories } = require('./controllers/categories');
+const { listingAllTheCollectPoints } = require('./controllers/collectPoints');
+const { registerUser, userLogIn } = require('./controllers/users');
+const { listingAllTheVouchers } = require('./controllers/voucher');
+const { authorizationToken } = require('./middlewares/tokenNeeded');
 const route = express();
 
 // Rotas de usuario
 //-crud
+route.post('/user', registerUser);
+route.post('/login', userLogIn);
 
-// Rotas de categorias
-//-get
-route.get('/', (req, res) => {
-    res.send('Hello World');
-});
-// Rotas de pontos de coleta
-//-get
+route.use(authorizationToken);
 
-// Rotas de cupons
-//-get
+route.get('/categories', listingAllTheCategories);
+
+route.get('/collect-points', listingAllTheCollectPoints);
+
+route.get('/vouchers', listingAllTheVouchers);
 
 // Rotas de trocas
 //-crud
