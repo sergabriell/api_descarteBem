@@ -56,7 +56,37 @@ const fieldsToLogin = ({ email, password }) => {
     return { ok: true }
 }
 
+const fieldsToExchange = ({ category_id, id_collect_point, score }) => {
+    if (!category_id) {
+        const response = {
+            message: errors.categoryX,
+            ok: false
+        }
+        return response;
+    }
+
+    if (!id_collect_point) {
+        const response = {
+            message: errors.collectPointX,
+            ok: false
+        }
+        return response;
+    }
+
+    if (!score) {
+        const response = {
+            message: errors.scoreX,
+            ok: false
+        }
+        return response;
+    }
+
+    return { ok: true }
+}
+
+
 module.exports = {
     fieldsToUser,
-    fieldsToLogin
+    fieldsToLogin,
+    fieldsToExchange
 }

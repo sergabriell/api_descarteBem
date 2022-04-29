@@ -18,7 +18,11 @@ const errors = {
     typeX: 'É necessário informar qual o tipo da transação.',
     wrongType: 'O tipo indicado não existe.',
     accountX: 'É preciso ter uma conta para ver as transações',
-    tokenX: 'Para acessar este recurso um token de autenticação válido deve ser enviado.'
+    tokenX: 'Para acessar este recurso um token de autenticação válido deve ser enviado.',
+    categoryX: 'É necessário indicar em qual categoria se encaixa a transação.',
+    collectPointX: 'É necessário indicar em qual ponto de coleta se encaixa a transação.',
+    couldNotExchange: 'Não foi possível realizar a troca',
+    couldNotUpdateScore: 'Não foi possível atualizar a pontuação'
 }
 
 module.exports = { errors }
