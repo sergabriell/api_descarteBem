@@ -35,7 +35,8 @@ CREATE TABLE IF NOT EXISTS exchange (
   id UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
   user_id UUID NOT NULL REFERENCES users(id),
   category_id UUID NOT NULL REFERENCES categories(id),
-  collect_point_id UUID NOT NULL REFERENCES collect_point(id)
+  collect_point_id UUID NOT NULL REFERENCES collect_point(id),
+  amount INT NOT NULL,
 );
 
 INSERT INTO categories (name, score) 
