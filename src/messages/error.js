@@ -5,6 +5,7 @@ const errors = {
     userNotFound: 'Usuário não encontrado.',
     nameX: 'O Campo nome é obrigatorio.',
     emailX: 'O Campo email é obrigatório.',
+    cpfX: 'O Campo CPF é obrigatório',
     passwordX: 'O Campo senha é obrigatorio.',
     transNonexistent: 'Não foi possível encontrar transação',
     catNonexistent: 'A categoria indicada não existe',

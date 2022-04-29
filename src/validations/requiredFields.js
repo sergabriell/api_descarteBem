@@ -1,57 +1,7 @@
 const { errors } = require('../messages/error')
 
-const fieldsToTransactions = ({ descricao, valor, data, categoria_id, tipo}) => {
-    if (!descricao) {
-        const response = {
-            message: errors.descriptionX,
-            ok: false
-        }
-        return response;
-    }
-
-    if (!valor) {
-        const response = {
-            message: errors.priceX,
-            ok: false
-        }
-        return response;
-    }
-
-    if (!data) {
-        const response = {
-            message: errors.dateX,
-            ok: false
-        }
-        return response;
-    }
-
-    if (!categoria_id) {
-        const response = {
-            message: errors.categoryIDX,
-            ok: false
-        }
-        return response;
-    }
-
-    if (!tipo) {
-        const response = {
-            message: errors.typeX,
-            ok: false
-        }
-        return response;
-    } else if (tipo !== 'entrada' && tipo !== 'saída') {
-        const response = {
-            message: errors.wrongType,
-            ok: false
-        }
-        return response;
-    }
-
-    return { ok: true }
-}
-
-const fieldsToUser = ({nome , email, senha}) => {
-    if (!nome) {
+const fieldsToUser = ({ name, email, cpf, password }) => {
+    if (!name) {
         const response = {
             message: errors.nameX,
             ok: false
@@ -67,7 +17,15 @@ const fieldsToUser = ({nome , email, senha}) => {
         return response;
     }
 
-    if (!senha) {
+    if (!cpf) {
+        const response = {
+            message: errors.cpfX,
+            ok: false
+        }
+        return response;
+    }
+
+    if (!password) {
         const response = {
             message: errors.passwordX,
             ok: false
@@ -78,7 +36,7 @@ const fieldsToUser = ({nome , email, senha}) => {
     return { ok: true }
 }
 
-const fieldsToLogin = ({email, senha}) => {
+const fieldsToLogin = ({ email, password }) => {
     if (!email) {
         const response = {
             message: errors.emailX,
@@ -87,7 +45,7 @@ const fieldsToLogin = ({email, senha}) => {
         return response;
     }
 
-    if (!senha) {
+    if (!password) {
         const response = {
             message: errors.passwordX,
             ok: false
@@ -98,8 +56,7 @@ const fieldsToLogin = ({email, senha}) => {
     return { ok: true }
 }
 
-module.exports = { 
-    fieldsToTransactions,
+module.exports = {
     fieldsToUser,
     fieldsToLogin
- }
+}

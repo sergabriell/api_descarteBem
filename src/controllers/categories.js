@@ -1,9 +1,9 @@
-const { default: knex } = require('knex');
+const knex = require("../database/knex");
 
 const listingAllTheCategories = async (req, res) => {
     try {
-        const { rows } = await knex('categories');
-        return res.status(200).json(rows);
+        const categories = await knex('categories');
+        return res.status(200).json(categories);
     } catch (error) {
         return res.status(400).json(error.message);
     }

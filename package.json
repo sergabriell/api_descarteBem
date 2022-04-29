@@ -9,6 +9,7 @@
   "author": "Carlos Tavares <carlostsa10@gmail.com>, Ricardo Lima <ricardo.engp@gmail.com>, Sergio Gabriel <sergio.gabriel85@yahoo.com>",
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "dotenv": "^16.0.0",
     "express": "^4.18.0",
     "jsonwebtoken": "^8.5.1",

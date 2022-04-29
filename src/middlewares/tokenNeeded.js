@@ -1,24 +1,37 @@
-const jsonwebtoken = require('jsonwebtoken');
-const jwtSecret = require('../jwt_secret');
+const jwt = require('jsonwebtoken');
+const jwtSecret = require('../jwtSecret');
 
-const conexao = require('../database/conexao');
+const knex = require('../database/knex');
 const { errors } = require('../messages/error');
 
 const authorizationToken = async (req, res, next) => {
-    const token = req.header('Authorization').replace('Bearer', "").trim();
-    if (!token) {
-        return res.status(400).json(errors.accountX);
+    const { authorization } = req.headers;
+
+    if (!authorization || authorization === 'Bearer undefined') {
+        return res.status(401).json({ mensagem: "O usuário precisa estar logado!" });
     }
-    const { id: jwtID } = jsonwebtoken.verify(token, jwtSecret);
-    
+
     try {
-        const { rowCount } = await conexao.query('select id from usuarios where id = $1', [jwtID]);
-        if (rowCount === 0) {
-            return res.status(400).json(errors.tokenX);
+        const token = authorization.replace('Bearer', '').trim();
+
+        if (!token) {
+            return res.status(400).json(errors.accountX);
         }
+
+        const { id: jwtID } = await jwt.verify(token, jwtSecret);
+
+        const getUser = await knex('users').where({ id: jwtID }).first();
+        if (!getUser) {
+            return res.status(404).json(errors.tokenX);
+        }
+
+        req.user = getUser;
 
         next()
     } catch (error) {
+        if (error.name === 'JsonWebTokenError' || error.name === 'TokenExpiredError') {
+            return res.status(401).json({ mensagem: "Logue e forneça um token válido para ter acesso!" })
+        }
         return res.status(400).json(error.message);
     }
 }
