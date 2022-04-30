@@ -26,7 +26,9 @@ const errors = {
     couldNotExchange: 'Não foi possível realizar a troca',
     couldNotUpdateScore: 'Não foi possível atualizar a pontuação',
     exchangeNotFound: 'Não foi possível encontrar a troca',
-    userUpdate: 'Não foi possível atualizar o usuário'
+    userUpdate: 'Não foi possível atualizar o usuário',
+    userDelete: 'Não foi possível deletar o usuário.',
+    userHasExchange: 'Exclua suas trocas para poder deletar sua conta.'
 }
 
 module.exports = { errors }

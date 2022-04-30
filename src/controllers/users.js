@@ -41,7 +41,7 @@ const registerUser = async (req, res) => {
     }
 };
 
-const userLogIn = async (req, res) => {
+const loginUser = async (req, res) => {
     const { email, password } = req.body;
     const validations = fieldsToLogin({ email, password });
 
@@ -98,7 +98,7 @@ const informationToTheUserHimself = async (req, res) => {
     }
 };
 
-const userUpdate = async (req, res) => {
+const updateUser = async (req, res) => {
     const userLogin = req.user;
     const { name, cpf, email, password, address } = req.body;
 
@@ -130,10 +130,39 @@ const userUpdate = async (req, res) => {
     }
 };
 
+const deleteUser = async (req, res) => {
+    const userLogin = req.user;
+
+    try {
+        const user = await knex('users').select('id', 'name', 'cpf', 'email', 'address', 'score').where({ id: userLogin.id }).first();
+
+        if (!user) {
+            return res.status(404).json(errors.userNotFound);
+        }
+
+        const userHasExchange = await knex('exchange').where({ user_id: userLogin.id });
+
+        if (userHasExchange) {
+            return res.status(400).json(errors.userHasExchange);
+        }
+
+        const deletedUser = await knex('users').del().where({ id: userLogin.id });
+
+        if (!deletedUser) {
+            return res.status(400).json(errors.userDelete);
+        }
+
+        return res.status(204).json();
+    } catch (error) {
+        return res.status(400).json(error.message);
+    }
+}
+
 
 module.exports = {
     registerUser,
-    userLogIn,
+    loginUser,
     informationToTheUserHimself,
-    userUpdate
+    updateUser,
+    deleteUser
 };
