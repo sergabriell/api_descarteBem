@@ -1,6 +1,5 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp"
 
-DROP TABLE users;
 CREATE TABLE IF NOT EXISTS users (
   id UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
   name TEXT NOT NULL,
@@ -11,21 +10,18 @@ CREATE TABLE IF NOT EXISTS users (
   score BIGINT DEFAULT 0
 );
 
-DROP TABLE categories;
 CREATE TABLE IF NOT EXISTS categories (
   id UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
   name VARCHAR(60) UNIQUE NOT NULL,
   score BIGINT NOT NULL
 );
 
-DROP TABLE collect_point;
 CREATE TABLE IF NOT EXISTS collect_point (
   id UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
   name TEXT UNIQUE NOT NULL,
   address TEXT NOT NULL
 );
 
-DROP TABLE voucher;
 CREATE TABLE IF NOT EXISTS voucher (
   id UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
   name TEXT NOT NULL,
