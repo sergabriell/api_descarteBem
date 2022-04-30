@@ -1,6 +1,6 @@
 const { errors } = require('../messages/error')
 
-const fieldsToUser = ({ name, email, cpf, password }) => {
+const fieldsToUser = ({ name, email, cpf, password, address }) => {
     if (!name) {
         const response = {
             message: errors.nameX,
@@ -33,6 +33,14 @@ const fieldsToUser = ({ name, email, cpf, password }) => {
         return response;
     }
 
+    if (!address) {
+        const response = {
+            message: errors.addressX,
+            ok: false
+        }
+        return response;
+    }
+
     return { ok: true }
 }
 
@@ -56,7 +64,7 @@ const fieldsToLogin = ({ email, password }) => {
     return { ok: true }
 }
 
-const fieldsToExchange = ({ category_id, id_collect_point, score }) => {
+const fieldsToExchange = ({ category_id, collect_point_id, amount }) => {
     if (!category_id) {
         const response = {
             message: errors.categoryX,
@@ -65,7 +73,7 @@ const fieldsToExchange = ({ category_id, id_collect_point, score }) => {
         return response;
     }
 
-    if (!id_collect_point) {
+    if (!collect_point_id) {
         const response = {
             message: errors.collectPointX,
             ok: false
@@ -73,9 +81,9 @@ const fieldsToExchange = ({ category_id, id_collect_point, score }) => {
         return response;
     }
 
-    if (!score) {
+    if (!amount) {
         const response = {
-            message: errors.scoreX,
+            message: errors.amountX,
             ok: false
         }
         return response;

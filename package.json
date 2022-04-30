@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js"
   },
   "repository": "git@github.com:cricardolima/api_descarteBem.git",
   "author": "Carlos Tavares <carlostsa10@gmail.com>, Ricardo Lima <ricardo.engp@gmail.com>, Sergio Gabriel <sergio.gabriel85@yahoo.com>",
@@ -14,8 +15,7 @@
     "express": "^4.18.0",
     "jsonwebtoken": "^8.5.1",
     "knex": "^2.0.0",
-    "pg": "^8.7.3",
-    "secure-password": "^4.0.0"
+    "pg": "^8.7.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"

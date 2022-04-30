@@ -1,8 +1,12 @@
+const env = require('dotenv');
 const jwt = require('jsonwebtoken');
-const jwtSecret = require('../jwtSecret');
 
 const knex = require('../database/knex');
 const { errors } = require('../messages/error');
+
+env.config()
+
+const jwtSecret = process.env.JWT_SECRET;
 
 const authorizationToken = async (req, res, next) => {
     const { authorization } = req.headers;
