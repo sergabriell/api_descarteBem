@@ -83,50 +83,48 @@ const userLogIn = async (req, res) => {
 };
 
 const informationToTheUserHimself = async (req, res) => {
-    const jwtID = tokenToGetID({ req });
+    const userLogin = req.user;
+
     try {
-        const { rowCount, rows } = await knex('users').where('id', jwtID);
-        if (rowCount === 0) {
+        const user = await knex('users').select('id', 'name', 'cpf', 'email', 'address', 'score').where({ id: userLogin.id }).first();
+
+        if (!user) {
             return res.status(404).json(errors.userNotFound);
         }
 
-        const { password: _, ...outrosDados } = rows[0];
-        return res.status(201).json({
-            ...outrosDados,
-        });
+        return res.status(200).json(user);
     } catch (error) {
         return res.status(400).json(error.message);
     }
 };
 
 const userUpdate = async (req, res) => {
-    const jwtID = tokenToGetID({ req });
-    const jwtEmail = tokenToGetEmail({ req })
+    const userLogin = req.user;
+    const { name, cpf, email, password, address } = req.body;
 
-    const { name, email, password } = req.body;
-    const validations = fieldsToUser({ name, email, password });
-    if (!validations.ok) {
-        return res.status(400).json(validations.message);
-    }
     try {
-        const { rowCount: ifEmailExists } = await knex('users').where('email', email);
+        const user = await knex('users').select('id', 'name', 'cpf', 'email', 'address', 'score').where({ id: userLogin.id }).first();
 
-        if (ifEmailExists !== jwtEmail) {
-            return res.status(404).json("O e-mail informado já está sendo utilizado por outro usuário.");
+        if (!user) {
+            return res.status(404).json(errors.userNotFound);
         }
 
-        const hash = (await pwd.hash(Buffer.from(password))).toString("hex");
+        const getEmail = await knex('users').where({ email }).whereNot({ email: user.email }).first();
 
-        const { rowCount: userUpdated } = await knex('users').where('id', jwtID).update({ name, email, password: hash });
-
-        if (userUpdated === 0) {
-            return res.status(400).json('Não foi possivel atualizar o usuário.');
+        if (getEmail) {
+            return res.status(400).json(errors.userExists);
         }
 
-        const user = await knex('users').where('email', email).first();
-        const { id: _, ...dados } = user;
+        const SALT = 10;
+        const hash = await bcrypt.hash(password, SALT);
 
-        return res.status(200).json({ ...dados, password })
+        const updatedUser = await knex('users').update({ name, cpf, email, password: hash, address }).where({ id: userLogin.id });
+
+        if (!updatedUser) {
+            return res.status(400).json(errors.userUpdate);
+        }
+
+        return res.status(204).json();
     } catch (error) {
         return res.status(400).json(error.message);
     }
@@ -136,6 +134,6 @@ const userUpdate = async (req, res) => {
 module.exports = {
     registerUser,
     userLogIn,
-    userUpdate,
-    informationToTheUserHimself
+    informationToTheUserHimself,
+    userUpdate
 };
