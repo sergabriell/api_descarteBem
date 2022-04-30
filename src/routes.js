@@ -27,6 +27,7 @@ route.put('/exchange/:exchange_id', updateExchange);
 route.delete('/exchange/:exchange_id', deleteExchange);
 
 route.get('/vouchers', listingAllTheVouchers);
+
 route.post('/shopping', registerShopping);
 route.get('/shopping', getAllShopping);
 route.delete('/shopping/:id_shopping', deleteShopping);
