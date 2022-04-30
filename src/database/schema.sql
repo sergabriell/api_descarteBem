@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS users (
   cpf VARCHAR(11) UNIQUE NOT NULL,
   email TEXT UNIQUE NOT NULL,
   password TEXT NOT NULL,
+  address TEXT NOT NULL,
   score BIGINT DEFAULT 0
 );
 
@@ -37,6 +38,7 @@ CREATE TABLE IF NOT EXISTS exchange (
   category_id UUID NOT NULL REFERENCES categories(id),
   collect_point_id UUID NOT NULL REFERENCES collect_point(id),
   amount INT NOT NULL,
+  score BIGINT NOT NULL
 );
 
 INSERT INTO categories (name, score) 
