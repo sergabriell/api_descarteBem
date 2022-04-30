@@ -30,6 +30,7 @@ const errors = {
     collectPointNotFound: 'Não foi possivel encontrar o ponto de coleta.',
     userUpdate: 'Não foi possível atualizar o usuário',
     userDelete: 'Não foi possível deletar o usuário.',
+    exchangeDelete: 'Não foi possível deletar a troca',
     userHasExchange: 'Exclua suas trocas para poder deletar sua conta.'
 }
 

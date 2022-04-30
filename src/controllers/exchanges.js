@@ -173,8 +173,56 @@ const updateExchange = async (req, res) => {
     }
 }
 
+const deleteExchange = async (req, res) => {
+    const userLogin = req.user;
+    const { exchange_id } = req.params;
+
+
+    if (exchange_id.length < 36) {
+        return res.status(400).json({ mensagem: "Id do tipo UUID inválido" })
+    }
+    try {
+        const getScoreExchange = await knex('exchange')
+            .select('score')
+            .where({ id: exchange_id })
+            .first();
+
+        if (!getScoreExchange) {
+            return res.status(404).json(errors.exchangeNotFound);
+        }
+
+        const getUserScore = await knex('users')
+            .select('score')
+            .where({ id: userLogin.id })
+            .first();
+
+        const updateUserScore = await knex('users')
+            .where({ id: userLogin.id })
+            .update({
+                score: Number(getUserScore.score) - Number(getScoreExchange.score)
+            })
+
+        if (!updateUserScore) {
+            return res.status(400).json(errors.couldNotUpdateScore);
+        }
+
+        const deleteExchange = await knex('exchange')
+            .where({ id: exchange_id, user_id: userLogin.id })
+            .del();
+
+        if (!deleteExchange) {
+            return res.status(400).json(errors.exchangeDelete);
+        }
+
+        return res.status(204).json();
+    } catch (error) {
+        return res.status(500).json(error.message);
+    }
+}
+
 module.exports = {
     doAexchange,
     showExchange,
-    updateExchange
+    updateExchange,
+    deleteExchange
 }

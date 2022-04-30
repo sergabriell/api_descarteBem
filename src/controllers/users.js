@@ -5,7 +5,6 @@ const jwt = require('jsonwebtoken');
 const knex = require('../database/knex');
 
 const { errors } = require('../messages/error');
-const { tokenToGetID, tokenToGetEmail } = require('../validations/token');
 const { fieldsToUser, fieldsToLogin } = require('../validations/requiredFields');
 
 env.config()
@@ -20,7 +19,9 @@ const registerUser = async (req, res) => {
     }
 
     try {
-        const getEmail = await knex('users').where({ email }).first();
+        const getEmail = await knex('users')
+            .where({ email })
+            .first();
 
         if (getEmail) {
             return res.status(400).json(errors.userExists);
@@ -29,7 +30,8 @@ const registerUser = async (req, res) => {
         const SALT = 10;
         const hash = await bcrypt.hash(password, SALT);
 
-        const addUser = await knex('users').insert({ name, email, cpf, password: hash, address });
+        const addUser = await knex('users')
+            .insert({ name, email, cpf, password: hash, address });
 
         if (!addUser) {
             return res.status(400).json(errors.couldNotSignin);
@@ -50,7 +52,9 @@ const loginUser = async (req, res) => {
     }
 
     try {
-        const getUser = await knex('users').where({ email }).first();
+        const getUser = await knex('users')
+            .where({ email })
+            .first();
 
         if (!getUser) {
             return res.status(400).json(errors.loginIncorrect);
@@ -86,7 +90,10 @@ const informationToTheUserHimself = async (req, res) => {
     const userLogin = req.user;
 
     try {
-        const user = await knex('users').select('id', 'name', 'cpf', 'email', 'address', 'score').where({ id: userLogin.id }).first();
+        const user = await knex('users')
+            .select('id', 'name', 'cpf', 'email', 'address', 'score')
+            .where({ id: userLogin.id })
+            .first();
 
         if (!user) {
             return res.status(404).json(errors.userNotFound);
@@ -103,13 +110,19 @@ const updateUser = async (req, res) => {
     const { name, cpf, email, password, address } = req.body;
 
     try {
-        const user = await knex('users').select('id', 'name', 'cpf', 'email', 'address', 'score').where({ id: userLogin.id }).first();
+        const user = await knex('users')
+            .select('id', 'name', 'cpf', 'email', 'address', 'score')
+            .where({ id: userLogin.id })
+            .first();
 
         if (!user) {
             return res.status(404).json(errors.userNotFound);
         }
 
-        const getEmail = await knex('users').where({ email }).whereNot({ email: user.email }).first();
+        const getEmail = await knex('users')
+            .where({ email })
+            .whereNot({ email: user.email })
+            .first();
 
         if (getEmail) {
             return res.status(400).json(errors.userExists);
@@ -118,7 +131,9 @@ const updateUser = async (req, res) => {
         const SALT = 10;
         const hash = await bcrypt.hash(password, SALT);
 
-        const updatedUser = await knex('users').update({ name, cpf, email, password: hash, address }).where({ id: userLogin.id });
+        const updatedUser = await knex('users')
+            .update({ name, cpf, email, password: hash, address })
+            .where({ id: userLogin.id });
 
         if (!updatedUser) {
             return res.status(400).json(errors.userUpdate);
@@ -134,19 +149,26 @@ const deleteUser = async (req, res) => {
     const userLogin = req.user;
 
     try {
-        const user = await knex('users').select('id', 'name', 'cpf', 'email', 'address', 'score').where({ id: userLogin.id }).first();
+        const user = await knex('users')
+            .select('id', 'name', 'cpf', 'email', 'address', 'score')
+            .where({ id: userLogin.id }).first();
 
         if (!user) {
             return res.status(404).json(errors.userNotFound);
         }
 
-        const userHasExchange = await knex('exchange').where({ user_id: userLogin.id });
+        const userHasExchange = await knex('exchange')
+            .where({ user_id: userLogin.id })
+            .first();
+
 
         if (userHasExchange) {
             return res.status(400).json(errors.userHasExchange);
         }
 
-        const deletedUser = await knex('users').del().where({ id: userLogin.id });
+        const deletedUser = await knex('users')
+            .del()
+            .where({ id: userLogin.id });
 
         if (!deletedUser) {
             return res.status(400).json(errors.userDelete);
