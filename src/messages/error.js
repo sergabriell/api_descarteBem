@@ -28,10 +28,11 @@ const errors = {
     couldNotUpdateScore: 'Não foi possível atualizar a pontuação',
     exchangeNotFound: 'Não foi possível encontrar a troca',
     collectPointNotFound: 'Não foi possivel encontrar o ponto de coleta.',
+    voucherNotFound: 'Não foi possível encontrar o cupom.',
     userUpdate: 'Não foi possível atualizar o usuário',
     userDelete: 'Não foi possível deletar o usuário.',
     exchangeDelete: 'Não foi possível deletar a troca',
-    userHasExchange: 'Exclua suas trocas para poder deletar sua conta.'
+    userHasExchangeAndShopping: 'Exclua suas trocas e compras para poder deletar sua conta.'
 }
 
 module.exports = { errors }
