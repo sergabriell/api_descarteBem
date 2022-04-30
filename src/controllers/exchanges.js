@@ -49,7 +49,13 @@ const showExchange = async (req, res) => {
     const userLogin = req.user;
 
     try {
-        const getExchange = await knex('exchange').where({ user_id: userLogin.id });
+        const getExchange = await knex.select({ id: 'exchange.id', user_name: 'users.name', category_name: 'categories.name', amount: 'exchange.amount', collection_location: 'collect_point.name', collection_address: 'collect_point.address', score: 'exchange.score' })
+            .from('exchange')
+            .leftJoin('users', 'exchange.user_id', 'users.id')
+            .leftJoin('categories', 'exchange.category_id', 'categories.id')
+            .leftJoin('collect_point', 'exchange.collect_point_id', 'collect_point.id')
+            .where({ user_id: userLogin.id });
+
         if (!getExchange) {
             return res.status(404).json(errors.exchangeNotFound);
         }
