@@ -1,7 +1,7 @@
 const express = require('express');
 const { listingAllTheCategories } = require('./controllers/categories');
 const { listingAllTheCollectPoints } = require('./controllers/collectPoints');
-const { doAexchange } = require('./controllers/exchanges');
+const { doAexchange, showExchange } = require('./controllers/exchanges');
 const { registerUser, userLogIn } = require('./controllers/users');
 const { listingAllTheVouchers } = require('./controllers/voucher');
 const { authorizationToken } = require('./middlewares/tokenNeeded');
@@ -23,4 +23,5 @@ route.get('/vouchers', listingAllTheVouchers);
 // Rotas de trocas
 //-crud
 route.post('/exchange', doAexchange);
+route.get('/exchange', showExchange);
 module.exports = route;

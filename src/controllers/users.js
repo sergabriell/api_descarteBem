@@ -1,21 +1,26 @@
-const knex = require('../database/knex');
-const { errors } = require('../messages/error');
-const { fieldsToUser, fieldsToLogin } = require('../validations/requiredFields');
-const { tokenToGetID, tokenToGetEmail } = require('../validations/token');
-const jwtSecret = require('../jwtSecret');
+const env = require('dotenv');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+const knex = require('../database/knex');
+
+const { errors } = require('../messages/error');
+const { tokenToGetID, tokenToGetEmail } = require('../validations/token');
+const { fieldsToUser, fieldsToLogin } = require('../validations/requiredFields');
+
+env.config()
+const jwtSecret = process.env.JWT_SECRET;
+
 const registerUser = async (req, res) => {
-    const { name, email, cpf, password } = req.body;
-    const validations = fieldsToUser({ name, email, cpf, password });
+    const { name, email, cpf, password, address } = req.body;
+    const validations = fieldsToUser({ name, email, cpf, password, address });
 
     if (!validations.ok) {
         return res.status(400).json(validations.message);
     }
 
     try {
-        const getEmail = await knex('users').where({ email }).first().debug();
+        const getEmail = await knex('users').where({ email }).first();
 
         if (getEmail) {
             return res.status(400).json(errors.userExists);
@@ -24,7 +29,7 @@ const registerUser = async (req, res) => {
         const SALT = 10;
         const hash = await bcrypt.hash(password, SALT);
 
-        const addUser = await knex('users').insert({ name, email, cpf, password: hash });
+        const addUser = await knex('users').insert({ name, email, cpf, password: hash, address });
 
         if (!addUser) {
             return res.status(400).json(errors.couldNotSignin);
@@ -66,7 +71,8 @@ const userLogIn = async (req, res) => {
             user: {
                 id: getUser.id,
                 name: getUser.name,
-                email: getUser.email
+                email: getUser.email,
+                address: getUser.address
             },
             token
         });
@@ -117,8 +123,8 @@ const userUpdate = async (req, res) => {
             return res.status(400).json('Não foi possivel atualizar o usuário.');
         }
 
-        const { rows } = await knex('users').where('email', email);
-        const { id: _, ...dados } = rows[0];
+        const user = await knex('users').where('email', email).first();
+        const { id: _, ...dados } = user;
 
         return res.status(200).json({ ...dados, password })
     } catch (error) {
