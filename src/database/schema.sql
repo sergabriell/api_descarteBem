@@ -37,6 +37,12 @@ CREATE TABLE IF NOT EXISTS exchange (
   score BIGINT NOT NULL
 );
 
+CREATE TABLE online_shopping (
+  id UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
+  user_id UUID NOT NULL REFERENCES users(id),
+  voucher_id UUID NOT NULL REFERENCES voucher(id)
+);
+
 INSERT INTO categories (name, score) 
 VALUES ('Plastico', 300), ('Vidro', 80), ('Metal', 150), ('Pilhas', 300), ('Óleo Vegetal', 300),
 ('Papelão', 500);

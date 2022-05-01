@@ -24,8 +24,14 @@ const errors = {
     amountX: 'É necessário indicar a quantidade para completar a troca.',
     collectPointX: 'É necessário indicar em qual ponto de coleta se encaixa a troca.',
     couldNotExchange: 'Não foi possível realizar a troca',
+    couldNotUpdateExchange: 'Não foi possível atualizar a troca',
     couldNotUpdateScore: 'Não foi possível atualizar a pontuação',
-    exchangeNotFound: 'Não foi possível encontrar a troca'
+    exchangeNotFound: 'Não foi possível encontrar a troca',
+    collectPointNotFound: 'Não foi possivel encontrar o ponto de coleta.',
+    userUpdate: 'Não foi possível atualizar o usuário',
+    userDelete: 'Não foi possível deletar o usuário.',
+    exchangeDelete: 'Não foi possível deletar a troca',
+    userHasExchange: 'Exclua suas trocas para poder deletar sua conta.'
 }
 
 module.exports = { errors }

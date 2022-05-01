@@ -1,18 +1,20 @@
 const express = require('express');
 const { listingAllTheCategories } = require('./controllers/categories');
 const { listingAllTheCollectPoints } = require('./controllers/collectPoints');
-const { doAexchange, showExchange } = require('./controllers/exchanges');
-const { registerUser, userLogIn } = require('./controllers/users');
+const { doAexchange, showExchange, updateExchange, deleteExchange } = require('./controllers/exchanges');
+const { registerUser, informationToTheUserHimself, updateUser, loginUser, deleteUser } = require('./controllers/users');
 const { listingAllTheVouchers } = require('./controllers/voucher');
 const { authorizationToken } = require('./middlewares/tokenNeeded');
 const route = express();
 
-// Rotas de usuario
-//-crud
 route.post('/user', registerUser);
-route.post('/login', userLogIn);
+route.post('/login', loginUser);
 
 route.use(authorizationToken);
+
+route.get('/user', informationToTheUserHimself);
+route.patch('/user', updateUser);
+route.delete('/user', deleteUser);
 
 route.get('/categories', listingAllTheCategories);
 
@@ -20,8 +22,8 @@ route.get('/collect-points', listingAllTheCollectPoints);
 
 route.get('/vouchers', listingAllTheVouchers);
 
-// Rotas de trocas
-//-crud
 route.post('/exchange', doAexchange);
 route.get('/exchange', showExchange);
+route.put('/exchange/:exchange_id', updateExchange);
+route.delete('/exchange/:exchange_id', deleteExchange);
 module.exports = route;
