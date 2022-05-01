@@ -163,7 +163,7 @@ const deleteUser = async (req, res) => {
 
 
         if (userHasExchange) {
-            return res.status(400).json(errors.userHasExchange);
+            return res.status(400).json(errors.userHasExchangeAndShopping);
         }
 
         const deletedUser = await knex('users')
